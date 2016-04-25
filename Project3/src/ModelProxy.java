@@ -39,6 +39,7 @@ public class ModelProxy implements ViewListener{
     */
     public void joinGame(String name)throws IOException
     {
+    	System.out.println("Starting Game");
 	    out.print("join " + name + System.lineSeparator());
 	    out.flush();
     }
@@ -68,22 +69,22 @@ public class ModelProxy implements ViewListener{
                 	
                 	String read = in.nextLine();
                 	String[] data = read.split(" ");
-                	
-                	
+                	                	
                 	System.out.println(read); //DEBUGGING - REMOVE ME
                 	
                 	
                     switch (data[0]) {
                         // number <p>
                         case "number":
-                            //modelListener.started();
-                        	
+                        	modelListener.playerJoin(Integer.parseInt(data[1]));
                             break;
                         // name <p> <n>
                         case "name":
+                        	modelListener.setName(Integer.parseInt(data[1]), data[2]);
                         	break;
                         //turn <p>
                         case "turn":
+                        	modelListener.setTurn(Integer.parseInt(data[1]));
                         	break;
                         //add <p> <r> <c>
                         case "add":

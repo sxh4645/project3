@@ -31,8 +31,14 @@ public class C4UI implements ModelListener
 	private JTextField message;
 	private JButton newGameButton;
 	private ViewListener viewListener;
+	
+	private int player 		= -1;
+	private int playerTurn 	= -1;
+	
+	private String playerName;
+	private String opponentName;
 
-// Exported constructors.
+	// Exported constructors.
 
 	/**
 	 * Construct a new Connect Four UI.
@@ -40,9 +46,7 @@ public class C4UI implements ModelListener
 	 * @param  board  Connect Four board.
 	 * @param  name   Player's name.
 	 */
-	public C4UI
-		(C4BoardIntf board,
-		 String name)
+	public C4UI(C4BoardIntf board, String name)
 		{
 		c4board = board;
 
@@ -79,10 +83,15 @@ public class C4UI implements ModelListener
 			{
 			public void mouseClicked (MouseEvent e)
 				{
-				int c = boardPanel.clickToColumn (e);
-				// TBD
-				
-				System.out.println("Column " + c);
+					//Don't continue if it's not your turn
+					if (playerTurn == player){
+						int c = boardPanel.clickToColumn (e);
+						
+						
+					}
+					else{
+						System.err.println("Not your turn");
+					}
 				}
 			});
 
@@ -91,7 +100,12 @@ public class C4UI implements ModelListener
 			{
 			public void actionPerformed (ActionEvent e)
 				{
-				// TBD
+					//Try to make a new game
+					try {
+						viewListener.newGame();
+					} catch (IOException ex) {
+						
+					}
 				}
 			});
 
@@ -103,19 +117,49 @@ public class C4UI implements ModelListener
 		frame.setVisible (true);
 		}
 	
-	
-		public void setViewListener(ViewListener viewListener)
-		{	
-			this.viewListener = viewListener;
-		}
-
-		/*
-		 * (non-Javadoc)
-		 * @see ModelListener#playerJoin(int)
-		 */
-		public void playerJoin(int player) throws IOException {
-			// TODO Auto-generated method stub
-			
-		}
-
+	/**
+	 * 
+	 * @param viewListener
+	 */
+	public void setViewListener(ViewListener viewListener)
+	{	
+		this.viewListener = viewListener;
 	}
+
+	/**
+	 * 
+	 */
+	public void playerJoin(int player) throws IOException {
+		this.player 	= player;	
+		this.playerTurn = 0;
+	}
+
+	/**
+	 * Used to save the name of the players for display purposes
+	 */
+	public void setName(int player, String name) throws IOException {
+		if (player == this.player){
+			this.playerName = name;
+		}
+		else{
+			this.opponentName = name;
+		}
+	}
+
+	@Override
+	public void setTurn(int player) throws IOException {
+		this.playerTurn = player;
+		
+		//Allow new Game button to be pressed
+		newGameButton.setEnabled (true);
+		
+		//Display which player's turn it is
+		if (this.playerTurn == this.player){
+			message.setText ("Your turn");
+		}
+		else{
+			message.setText (opponentName + "'s turn");
+		}
+	}
+
+}

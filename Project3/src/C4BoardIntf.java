@@ -18,7 +18,11 @@ public interface C4BoardIntf
 	 * Number of columns.
 	 */
 	public static final int COLS = 7;
+	
+	public void resetBoard();
 
+	public void addPlayerMarker(int player, int r, int c);
+	
 	/**
 	 * Determine if the given row and column contains player 1's marker.
 	 *
