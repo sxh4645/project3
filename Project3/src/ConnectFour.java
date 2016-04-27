@@ -19,16 +19,17 @@ public class ConnectFour {
 		int port 		= Integer.parseInt(args[1]);
 		String name 	= args[2];
 		
-        //Create Socket to Server
+        	//Create Socket to Server
 		Socket socket = new Socket();
 		socket.connect(new InetSocketAddress (host, port));
 				        
-        ModelProxy proxy = new ModelProxy(socket);
-        C4UI view = new C4UI(null, name);
+		C4Board board = new C4Board();
+        	ModelProxy proxy = new ModelProxy(socket);
+        	C4UI view = new C4UI(board, name);
         
-        view.setViewListener(proxy);
-        proxy.setModelListener(view);
-        proxy.joinGame(name);
+        	view.setViewListener(proxy);
+        	proxy.setModelListener(view);
+        	proxy.joinGame(name);
 	}
 
 }

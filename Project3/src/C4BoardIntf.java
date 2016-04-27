@@ -23,6 +23,8 @@ public interface C4BoardIntf
 
 	public void addPlayerMarker(int player, int r, int c);
 	
+	public boolean deadGame();
+	
 	/**
 	 * Determine if the given row and column contains player 1's marker.
 	 *

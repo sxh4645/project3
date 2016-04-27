@@ -20,7 +20,7 @@ public class ModelProxy implements ViewListener{
     public ModelProxy(Socket socket) throws IOException{
         this.socket = socket;
 		out = new PrintStream(socket.getOutputStream());
-		in 	= new Scanner(socket.getInputStream());
+		in  = new Scanner(socket.getInputStream());
     }
     
     // Exported operations.
@@ -33,16 +33,15 @@ public class ModelProxy implements ViewListener{
         new ReaderThread() .start();
     }
 
-    /**
-    * Start the password cracking process.
-    * ... 
-    */
-    public void joinGame(String name)throws IOException
-    {
-    	System.out.println("Starting Game");
+	/**
+	* Start the password cracking process.
+	* ... 
+	*/
+	public void joinGame(String name)throws IOException
+	{
 	    out.print("join " + name + System.lineSeparator());
 	    out.flush();
-    }
+	}
     
 	public void newGame() throws IOException {
 		out.print("clear" + System.lineSeparator());
@@ -50,7 +49,7 @@ public class ModelProxy implements ViewListener{
 	}
 
 	public void action(int player, int column) throws IOException {
-		out.print("add " + player + " " + column);
+		out.print("add " + player + " " + column + System.lineSeparator());
 		out.flush();		
 	}    
     
@@ -68,10 +67,7 @@ public class ModelProxy implements ViewListener{
                 while (true) {
                 	
                 	String read = in.nextLine();
-                	String[] data = read.split(" ");
-                	                	
-                	System.out.println(read); //DEBUGGING - REMOVE ME
-                	
+                	String[] data = read.split(" ");          	
                 	
                     switch (data[0]) {
                         // number <p>
@@ -88,8 +84,11 @@ public class ModelProxy implements ViewListener{
                         	break;
                         //add <p> <r> <c>
                         case "add":
+				modelListener.addMove(Integer.parseInt(data[1]),
+					Integer.parseInt(data[2]), Integer.parseInt(data[3]));
                         	break;
                         case "clear":
+				modelListener.newGame();
                         	break;
                         default:
                             System.err.println ("Bad message");

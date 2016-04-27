@@ -86,11 +86,14 @@ public class C4UI implements ModelListener
 					//Don't continue if it's not your turn
 					if (playerTurn == player){
 						int c = boardPanel.clickToColumn (e);
-						
-						
-					}
-					else{
-						System.err.println("Not your turn");
+
+						try{
+
+							viewListener.action(player, c);
+						}
+						catch(Exception ex){
+						}
+
 					}
 				}
 			});
@@ -129,7 +132,7 @@ public class C4UI implements ModelListener
 	/**
 	 * 
 	 */
-	public void playerJoin(int player) throws IOException {
+	public void playerJoin(int player) {
 		this.player 	= player;	
 		this.playerTurn = 0;
 	}
@@ -137,7 +140,7 @@ public class C4UI implements ModelListener
 	/**
 	 * Used to save the name of the players for display purposes
 	 */
-	public void setName(int player, String name) throws IOException {
+	public void setName(int player, String name) {
 		if (player == this.player){
 			this.playerName = name;
 		}
@@ -146,20 +149,34 @@ public class C4UI implements ModelListener
 		}
 	}
 
-	@Override
-	public void setTurn(int player) throws IOException {
+	public void setTurn(int player) {
 		this.playerTurn = player;
 		
 		//Allow new Game button to be pressed
 		newGameButton.setEnabled (true);
 		
 		//Display which player's turn it is
-		if (this.playerTurn == this.player){
+		if (this.playerTurn == 0 || c4board.deadGame()){
+			message.setText ("Game over");
+		}
+		else if (this.playerTurn == this.player){
 			message.setText ("Your turn");
 		}
 		else{
 			message.setText (opponentName + "'s turn");
 		}
+	}
+
+	public void addMove(int player, int r, int c){
+		c4board.addPlayerMarker(player, r, c);
+		
+		boardPanel.repaint();
+	}
+
+	public void newGame(){
+		c4board.resetBoard();
+
+		boardPanel.repaint();
 	}
 
 }
