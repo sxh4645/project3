@@ -19,10 +19,25 @@ public interface C4BoardIntf
 	 */
 	public static final int COLS = 7;
 	
+	/**
+	 * Will reset the board back to 0 markers
+	 */
 	public void resetBoard();
 
+	/**
+	 * Determine if the marker can be added to the position provided
+	 * 
+	 * @param player
+	 * @param r
+	 * @param c
+	 */
 	public void addPlayerMarker(int player, int r, int c);
 	
+	/**
+	 * Determines if the game can no longer be played
+	 * 
+	 * @return True if no more moves, false otherwise
+	 */
 	public boolean deadGame();
 	
 	/**

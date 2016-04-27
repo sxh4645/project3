@@ -87,12 +87,7 @@ public class C4UI implements ModelListener
 					if (playerTurn == player){
 						int c = boardPanel.clickToColumn (e);
 
-						try{
-
-							viewListener.action(player, c);
-						}
-						catch(Exception ex){
-						}
+						viewListener.action(player, c);
 
 					}
 				}
@@ -103,12 +98,7 @@ public class C4UI implements ModelListener
 			{
 			public void actionPerformed (ActionEvent e)
 				{
-					//Try to make a new game
-					try {
-						viewListener.newGame();
-					} catch (IOException ex) {
-						
-					}
+					viewListener.newGame();
 				}
 			});
 
@@ -130,7 +120,7 @@ public class C4UI implements ModelListener
 	}
 
 	/**
-	 * 
+	 *  When the player starts the game he sets what player they are (1 or 2)
 	 */
 	public void playerJoin(int player) {
 		this.player 	= player;	
@@ -148,7 +138,10 @@ public class C4UI implements ModelListener
 			this.opponentName = name;
 		}
 	}
-
+	
+	/**
+	 * Used from the viewListener to display information to the UI
+	 */
 	public void setTurn(int player) {
 		this.playerTurn = player;
 		
@@ -167,12 +160,19 @@ public class C4UI implements ModelListener
 		}
 	}
 
+	/**
+	 * When the provided move is given from the server it will
+	 * change the board state and repaint it	 
+	 */
 	public void addMove(int player, int r, int c){
 		c4board.addPlayerMarker(player, r, c);
 		
 		boardPanel.repaint();
 	}
 
+	/**
+	 * When the server sends a new game, clear the board and reset the ui.
+	 */
 	public void newGame(){
 		c4board.resetBoard();
 

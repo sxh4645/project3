@@ -4,6 +4,13 @@ import java.io.IOException;
 import java.net.Socket;
 import java.util.Scanner;
 
+/**
+ * 
+ * @author Shane
+ * 
+ * Used as the main communication from the Controller + View to the Model (Server)
+ *
+ */
 public class ModelProxy implements ViewListener{
 
 	// Hidden data members.
@@ -34,21 +41,27 @@ public class ModelProxy implements ViewListener{
     }
 
 	/**
-	* Start the password cracking process.
+	* join with the player name to send to the server
 	* ... 
 	*/
-	public void joinGame(String name)throws IOException
+	public void joinGame(String name)
 	{
 	    out.print("join " + name + System.lineSeparator());
 	    out.flush();
 	}
     
-	public void newGame() throws IOException {
+	/**
+	 * Sends the clear code to the server to reset the game
+	 */
+	public void newGame() {
 		out.print("clear" + System.lineSeparator());
 		out.flush();
 	}
 
-	public void action(int player, int column) throws IOException {
+	/**
+	 * Sends the move made from the UI to the server
+	 */
+	public void action(int player, int column) {
 		out.print("add " + player + " " + column + System.lineSeparator());
 		out.flush();		
 	}    
@@ -84,11 +97,11 @@ public class ModelProxy implements ViewListener{
                         	break;
                         //add <p> <r> <c>
                         case "add":
-				modelListener.addMove(Integer.parseInt(data[1]),
-					Integer.parseInt(data[2]), Integer.parseInt(data[3]));
+                        	modelListener.addMove(Integer.parseInt(data[1]),
+                        			Integer.parseInt(data[2]), Integer.parseInt(data[3]));
                         	break;
                         case "clear":
-				modelListener.newGame();
+                        	modelListener.newGame();
                         	break;
                         default:
                             System.err.println ("Bad message");
